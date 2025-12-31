@@ -1,36 +1,44 @@
-# hk-bus-time-between-stops
- 
-This repository hosts an **experimental attempt** to fetch and calculate the estimated journey times between bus stops, MTR Stations and Light Rail stops where ETA services are available in Hong Kong. The results seems to be quite close to the official estimates from the transport operators.
+# HK Bus Travel Time Explorer
 
-It essentially works by looking at the distance between stops/stations and the ETA difference between them on services the stops at them consecutively. Values are averaged out over time in hopes of getting more and more accurate.
+[**Live Website**](https://hk-bus-eta-482904.web.app)
 
-The code is being executed on an external server 24/7 and its results are pushed to the [`pages`](https://github.com/LOOHP/hk-bus-time-between-stops/tree/pages) branch at around minute 0 every hour (might be slightly delayed). The files are indexed with the first 2 characters (or the first character if there isn't a 2nd one) to strike a balance between not having one big data file and not having a few thousand small files.
+A web application to visualize and compare estimated travel times between bus stops in Hong Kong, leveraging historical data to provide "ripple" effect travel time calculations.
 
-### Example request
-Get the journey times to all next stops from Battery Street Jordan (**07**6E1E9D5874C41D)<br>
-Request: https://timeinterval.hkbuseta.com/times/07.json
+## Features
 
-Alternatively, you can fetch the page that contains all journey times<br>
-Request: https://timeinterval.hkbuseta.com/times/all.json
+- **Route Visualization**: See travel times between stops for any bus route.
+- **Dynamic "Ripple" Calculation**: Estimates arrival times at each stop based on the departure time from the previous stop, accounting for changing traffic conditions over the course of a journey.
+- **Route Comparison**: Compare travel times of different routes that share the same start and end stops.
+- **Hourly Analysis**: View how travel times fluctuate throughout the day.
+- **Overnight Support**: Automatically handles trips that span across midnight.
 
-### Example hourly request 
-**Missing journey times for hourly requests are normal, you are advised to fallback to the average journey time using the regular request above.**
+## Technical Overview
 
-Get the journey times to all next stops from Battery Street Jordan (**07**6E1E9D5874C41D) **on Monday from 10:00 - 10:59**<br>
-Request: https://timeinterval.hkbuseta.com/times_hourly/1/10/07.json
+- **Backend**: Python (`server.py`) with `http.server` for a lightweight API.
+- **Frontend**: Vanilla HTML/JS (`dashboard.html`, `dashboard_data.js`).
+- **Data Analysis**: `analyze_route.py` processes raw ETA data to compute average intervals.
+- **Deployment**: hosted on Firebase (Frontend on Hosting, Backend on Cloud Run).
 
-Alternatively, you can fetch the page that contains all journey times in that hour<br>
-Request: https://timeinterval.hkbuseta.com/times_hourly/1/10/all.json
+## Local Development
 
-## Disclaimer
-As this is an **experimental attempt**, please **expect inaccuracies**, especially to highly frequent & busy services, although the results seems to be quite close to offical estimates.
+To run the application locally:
 
-## Key Features
-### Dynamic "Ripple" Travel Time Calculation
-Travel times are calculated cumulatively to account for the passage of time during a journey. Instead of fetching traffic data for all stops at a single static hour (e.g., 8:00 AM), the system estimates the arrival time at each stop and looks up the relevant traffic data for that specific time. This "ripple effect" ensures that long routes reflect changing traffic conditions (e.g., a bus transitioning from off-peak to rush hour).
+1. **Install Dependencies**:
+   Ensure you have Python 3 installed. No external packages are strictly required for the basic server, as it uses standard libraries.
 
-### Overnight Day Wrapping
-For trips that start late at night and extend past midnight, the system automatically detects the date change and switches to fetching data from the next day's source. This ensures that a Friday night bus arriving Saturday morning uses Saturday morning traffic data for the latter part of the journey.
+2. **Run Server**:
+   ```bash
+   python3 server.py
+   ```
+
+3. **Open Access**:
+   Navigate to `http://localhost:8000` in your browser.
+
+## Deployment
+
+The project is configured for Firebase.
+- `deploy.sh`: Script to build the Docker container and deploy to Cloud Run and Firebase Hosting.
+- `firebase.json`: Firebase configuration.
 
 ## Credits
-Many thanks to `HK Bus Crawling@2021, https://github.com/hkbus/hk-bus-crawling`
+Many thanks to `HK Bus Crawling@2021` (https://github.com/hkbus/hk-bus-crawling) for the underlying data structures.

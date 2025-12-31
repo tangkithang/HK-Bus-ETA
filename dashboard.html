@@ -12,15 +12,7 @@
         import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js";
 
         // Your web app's Firebase configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyD73BJWtGRKOr1dLZ8zQV6PgfG_5k1ZzYU",
-            authDomain: "hk-bus-eta-9e111.firebaseapp.com",
-            projectId: "hk-bus-eta-9e111",
-            storageBucket: "hk-bus-eta-9e111.firebasestorage.app",
-            messagingSenderId: "1004989770016",
-            appId: "1:1004989770016:web:bce3fe3191e78a3bc9cf45",
-            measurementId: "G-3QG6CKKEZZ"
-        };
+        import { firebaseConfig } from "./public/firebase_config.js";
 
         // Initialize Firebase
         const app = initializeApp(firebaseConfig);

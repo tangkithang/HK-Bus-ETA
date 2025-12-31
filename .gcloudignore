@@ -1,0 +1,8 @@
+.git
+.gitignore
+Dockerfile
+README.md
+LICENSE
+*.pyc
+__pycache__
+!public/firebase_config.js
