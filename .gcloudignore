@@ -1,6 +1,6 @@
 .git
 .gitignore
-Dockerfile
+!Dockerfile
 README.md
 LICENSE
 *.pyc
